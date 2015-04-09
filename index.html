@@ -17,6 +17,7 @@
     <!-- Custom styles for this template -->
     <link href="jumbotron-narrow.css" rel="stylesheet">
     <script type"text/javascript" src="js/script.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=load"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -52,12 +53,71 @@
       </nav>
       </div>
       	
-
-
       <div class="jumbotron" id="title">
-      <div class="date-outer">
-<div>http://www.youtube.com/watch?v=t-ZRX8984sc</div>
-    <br />
+      <div id="player"></div>
+    <div id="title"></div>
+    <script>
+        var tag = document.createElement( 'script' );
+
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName( 'script' )[0];
+        firstScriptTag.parentNode.insertBefore( tag, firstScriptTag );
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player( 'player', {
+                height: '390',
+                width: '640',
+                playerVars: {
+                    'rel': 0,
+                    'showinfo': 0,
+                    'autoplay': 1,
+                    'controls': 0
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            } );
+        }
+
+        var getRandom = function( min, max ) {
+            return Math.random() * ( max - min ) + min;
+        };
+
+        var playRandomTrack = function() {
+            num = getRandom( 0, 99 );
+            player.playVideoAt( num );
+            setTimeout( function() {
+                var intId = setInterval( function() {
+                    if ( [ 1, 2, 5 ].indexOf( player.getPlayerState() ) >= 0 ) {
+                        document.getElementById( "title" ).innerText = player.getVideoData().title;
+                        clearInterval( intId );
+                    }
+                }, 100 );
+            }, 100 );
+        };
+
+        function onPlayerReady( event ) {
+            player.loadPlaylist( {
+                'listType': 'playlist',
+                'list': 'PLmc_AnfxCB6t6Lwwgx3x5OxfNOWwHluU-',
+                'index': '99',
+                'startSeconds': '0',
+                'suggestedQuality': 'hd720'
+            } );
+            player.setShuffle( {
+                'shufflePlaylist': 1
+            } );
+            var intId = setInterval( function() {
+                if ( player ) {
+                    if ( [ 1, 2, 5 ].indexOf( player.getPlayerState() ) >= 0 ) {
+                        document.getElementById( "title" ).innerText = player.getVideoData().title;
+                        clearInterval( intId );
+                    }
+                }
+            }, 100 );
+        }
+    </script>
 </div>
 
       

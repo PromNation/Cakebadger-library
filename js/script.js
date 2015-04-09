@@ -22,7 +22,23 @@ Twitch.init({clientId: 'YOUR_CLIENT_ID_HERE'}, function(error, status) {
   }
 });
 */
-$('body').html(function(i, html) {
-    return html.replace(/(?:http:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/g, '<center><iframe width="640" height="360" src="http://www.youtube.com/embed/$1?modestbranding=1&rel=0&wmode=transparent&theme=light&color=white" frameborder="0" allowfullscreen></iframe></center>').replace(/(?:http:\/\/)?(?:www\.)?(?:vimeo\.com)\/(.+)/g, '<center><iframe src="//player.vimeo.com/video/$1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></center>').replace(/(?:http:\/\/)?(?:dailymotion\.com|dai\.ly)\/(.+)/g, '<center><iframe frameborder="0" width="560" height="315" src="http://www.dailymotion.com/embed/video/$1?logo=0&foreground=ffffff&highlight=1bb4c6&background=000000" allowfullscreen></iframe></center>');
+//Init Function for Youtube API
+function init() {
+  gapi.client.setApiKey('AIzaSyCWADhk71JY52Lt9pEq5mj-QWTKUOhf9mw');
+  gapi.client.load('urlshortener', 'v1').then(makeRequest);
+}
 
-});
+function makeRequest() {
+  var request = gapi.client.urlshortener.url.get({
+    'shortUrl': 'http://goo.gl/fbsS'
+  });
+  request.then(function(response) {
+    appendResults(response.result.longUrl);
+  });
+}
+
+function appendResults(text) {
+   var results = document.getElementById('results');
+   results.appendChild(document.createElement('P'));
+   results.appendChild(document.createTextNode(text));
+}
