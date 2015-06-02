@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="Video library of CakeBadger.com">
     <meta name="author" content="Anthony Prom">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" href="images/favicon.ico">
 
     <title>Video Library</title>
 
@@ -18,6 +18,8 @@
     <link href="jumbotron-narrow.css" rel="stylesheet">
     <script type"text/javascript" src="js/script.js"></script>
     <script src="https://apis.google.com/js/client.js?onload=load"></script>
+      <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.rawgit.com/Fugiman/Twitch-Channel-Status/1d74252edf89110507cbf3088f9c3eaa38fac9d3/twitch-channel-status.min.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -47,6 +49,7 @@
               <li><a href="http://cakebadger.com">Home</a></li>
               <li><a href="#about">About</a></li>
               <li class="active"><a href="http://library.cakebadger.com">Video Library</a></li>
+                <li><a href="http://twitch.tv/CakeBadgerTwitch">Twitch<img data-twitch-channel="CakeBadgerTwitch"></a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -54,70 +57,19 @@
       </div>
       	
       <div class="jumbotron" id="title">
-      <div id="player"></div>
-    <div id="title"></div>
-    <script>
-        var tag = document.createElement( 'script' );
-
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName( 'script' )[0];
-        firstScriptTag.parentNode.insertBefore( tag, firstScriptTag );
-
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player( 'player', {
-                height: '390',
-                width: '640',
-                playerVars: {
-                    'rel': 0,
-                    'showinfo': 0,
-                    'autoplay': 1,
-                    'controls': 0
-                },
-                events: {
-                    'onReady': onPlayerReady
-                }
-            } );
-        }
-
-        var getRandom = function( min, max ) {
-            return Math.random() * ( max - min ) + min;
-        };
-
-        var playRandomTrack = function() {
-            num = getRandom( 0, 99 );
-            player.playVideoAt( num );
-            setTimeout( function() {
-                var intId = setInterval( function() {
-                    if ( [ 1, 2, 5 ].indexOf( player.getPlayerState() ) >= 0 ) {
-                        document.getElementById( "title" ).innerText = player.getVideoData().title;
-                        clearInterval( intId );
-                    }
-                }, 100 );
-            }, 100 );
-        };
-
-        function onPlayerReady( event ) {
-            player.loadPlaylist( {
-                'listType': 'playlist',
-                'list': 'PLmc_AnfxCB6t6Lwwgx3x5OxfNOWwHluU-',
-                'index': '99',
-                'startSeconds': '0',
-                'suggestedQuality': 'hd720'
-            } );
-            player.setShuffle( {
-                'shufflePlaylist': 1
-            } );
-            var intId = setInterval( function() {
-                if ( player ) {
-                    if ( [ 1, 2, 5 ].indexOf( player.getPlayerState() ) >= 0 ) {
-                        document.getElementById( "title" ).innerText = player.getVideoData().title;
-                        clearInterval( intId );
-                    }
-                }
-            }, 100 );
-        }
-    </script>
+     <div id="login-container" class="pre-auth">
+      This application requires access to your YouTube account.
+      Please <a href="#" id="login-link">authorize</a> to continue.
+    </div>
+    <div id="video-container"></div>
+    <div class="button-container">
+      <button id="prev-button" class="paging-button" onclick="previousPage();">Previous Page</button>
+      <button id="next-button" class="paging-button" onclick="nextPage();">Next Page</button>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript" src="auth.js"></script>
+    <script type="text/javascript" src="my_uploads.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
 </div>
 
       
